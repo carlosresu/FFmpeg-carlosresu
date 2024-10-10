@@ -44,9 +44,9 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     # Set up native optimization for macOS
     OPT_FLAGS="-O3 -ffast-math -ftree-vectorize -march=native"
 
-    # Set paths
+    # Set paths and include both Homebrew and custom install directories in PKG_CONFIG_PATH
     PREFIX="/opt/ffmpeg_build"
-    PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
+    export PKG_CONFIG_PATH="/opt/homebrew/lib/pkgconfig:$PREFIX/lib/pkgconfig"
 
     # Ensure directories exist
     sudo mkdir -p $PREFIX
@@ -65,9 +65,9 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
     # Set up native optimization for Linux
     OPT_FLAGS="-O3 -ffast-math -ftree-vectorize -march=native"
 
-    # Set paths
+    # Set paths and include both system-wide and custom install directories in PKG_CONFIG_PATH
     PREFIX="/opt/ffmpeg_build"
-    PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
+    export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PREFIX/lib/pkgconfig"
 
     # Ensure directories exist
     sudo mkdir -p $PREFIX
@@ -83,9 +83,9 @@ elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYG
     # Set up native optimization for Windows
     OPT_FLAGS="-O3 -ffast-math -ftree-vectorize -march=native"
 
-    # Set paths
+    # Set paths and include both MSYS2 and custom install directories in PKG_CONFIG_PATH
     PREFIX="/mingw64/opt/ffmpeg_build"
-    PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
+    export PKG_CONFIG_PATH="/mingw64/lib/pkgconfig:$PREFIX/lib/pkgconfig"
 
     # Ensure directories exist
     sudo mkdir -p $PREFIX
