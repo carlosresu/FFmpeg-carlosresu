@@ -48,6 +48,9 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     PREFIX="/opt/ffmpeg_build"
     export PKG_CONFIG_PATH="/opt/homebrew/lib/pkgconfig:$PREFIX/lib/pkgconfig"
 
+    # Manually include Homebrew's include and lib paths for LAME and other libraries
+    CONFIG_FLAGS="$CONFIG_FLAGS --extra-cflags=-I/opt/homebrew/include --extra-ldflags=-L/opt/homebrew/lib"
+
     # Ensure directories exist
     sudo mkdir -p $PREFIX
 
