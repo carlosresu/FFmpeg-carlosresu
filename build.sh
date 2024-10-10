@@ -101,7 +101,7 @@ CONFIG_FLAGS="$CONFIG_FLAGS --enable-static --enable-shared --enable-pic"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-lto --enable-optimizations"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-hardcoded-tables --enable-swscale-alpha"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-postproc --enable-swresample"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-avresample --enable-pthreads"
+CONFIG_FLAGS="$CONFIG_FLAGS --enable-pthreads"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-runtime-cpudetect --disable-debug"
 
 # Video and Audio Codecs
