@@ -117,7 +117,7 @@ CONFIG_FLAGS="$CONFIG_FLAGS --enable-libxvid --enable-libzmq --enable-libzimg"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-librabbitmq --enable-libsnappy --enable-libsrt"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-libspeex --enable-libtesseract --enable-libvmaf"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-libaom --enable-libdav1d --enable-libsvtav1"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-libaribb24 --enable-libmysofa --enable-decklink"
+CONFIG_FLAGS="$CONFIG_FLAGS --enable-libaribb24 --enable-libmysofa"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-openssl --enable-sdl2"
 
 # Hardware acceleration
