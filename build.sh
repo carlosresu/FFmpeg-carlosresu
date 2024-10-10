@@ -71,7 +71,7 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     export LDFLAGS="-L/opt/homebrew/lib $LDFLAGS"
 
     # Ensure directories exist
-    mkdir -p $PREFIX
+    sudo mkdir -p $PREFIX
 
     # Disable VAAPI and VDPAU for macOS
     VAAPI_FLAG=""
@@ -102,7 +102,7 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
     export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PREFIX/lib/pkgconfig"
 
     # Ensure directories exist
-    mkdir -p $PREFIX
+    sudo mkdir -p $PREFIX
 
     # Enable VAAPI and VDPAU for Linux
     VAAPI_FLAG="--enable-vaapi"
@@ -132,7 +132,7 @@ elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYG
     export PKG_CONFIG_PATH="/mingw64/lib/pkgconfig:$PREFIX/lib/pkgconfig"
 
     # Ensure directories exist
-    mkdir -p $PREFIX
+    sudo mkdir -p $PREFIX
 
     # Disable VAAPI and VDPAU for Windows
     VAAPI_FLAG=""
