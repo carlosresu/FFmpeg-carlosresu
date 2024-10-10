@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e  # Exit immediately if any command fails
 
+git submodule update --init --recursive
+
 ### Platform and Architecture Detection ###
 PLATFORM=$(uname)
 ARCH=$(uname -m)
