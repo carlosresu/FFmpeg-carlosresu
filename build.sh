@@ -8,7 +8,7 @@ PLATFORM=$(uname)
 ARCH=$(uname -m)
 
 ### Default flags
-CONFIG_FLAGS="--enable-gpl --enable-version3 --enable-nonfree --enable-static --enable-shared --enable-pic"
+CONFIG_FLAGS="--enable-gpl --enable-version3 --enable-nonfree --disable-static --enable-shared --enable-pic"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-lto --enable-optimizations --enable-hardcoded-tables"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-swscale-alpha --enable-postproc --enable-swresample"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-pthreads --disable-decklink --enable-runtime-cpudetect --disable-debug"
