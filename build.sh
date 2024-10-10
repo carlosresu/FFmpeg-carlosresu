@@ -23,7 +23,7 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     # Install essential dependencies via Homebrew
     echo "Installing macOS dependencies..."
     brew install nasm yasm pkg-config automake autoconf cmake libtool texinfo git
-    brew install zlib x264 x265 fdk-aac libvpx libvorbis libass libbluray opencore-amr opus aom dav1d frei0r theora libvidstab libvmaf rav1e rubberband sdl2 snappy speex srt tesseract two-lame xvid xz fontconfig frei0r fribidi gnutls lame libsoxr openssl aribb24
+    brew install zlib x264 x265 fdk-aac libvpx libvorbis libass libbluray opencore-amr opus aom dav1d frei0r theora libvidstab libvmaf rav1e rubberband sdl2 snappy speex srt tesseract two-lame xvid xz fontconfig frei0r fribidi gnutls openssl aribb24
 
     # Skip unavailable dependencies or provide manual installation instructions
     echo "Note: You'll need to install 'librtmp' and 'libzmq' manually as they are not available in Homebrew."
@@ -49,10 +49,28 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     export PKG_CONFIG_PATH="/opt/homebrew/lib/pkgconfig:$PREFIX/lib/pkgconfig"
 
     # Manually include Homebrew's include and lib paths for LAME and other libraries
-    CONFIG_FLAGS="$CONFIG_FLAGS --extra-cflags=-I/opt/homebrew/include --extra-ldflags=-L/opt/homebrew/lib"
+    export CFLAGS="-I/opt/homebrew/include $CFLAGS"
+    export LDFLAGS="-L/opt/homebrew/lib $LDFLAGS"
 
     # Ensure directories exist
     sudo mkdir -p $PREFIX
+
+    # Install and build the latest LAME from SourceForge if not installed
+    if ! command -v lame &> /dev/null; then
+        echo "LAME not found. Installing the latest version from SourceForge..."
+        cd /tmp
+        # Download and extract the latest LAME version from SourceForge
+        wget https://downloads.sourceforge.net/project/lame/lame/latest/lame-latest.tar.gz -O lame-latest.tar.gz
+        tar -xzf lame-latest.tar.gz
+        cd lame-*
+        ./configure --prefix=/opt/ffmpeg_build --bindir=/usr/local/bin --disable-shared
+        make
+        sudo make install
+        cd ..
+        rm -rf lame-*
+    else
+        echo "LAME is already installed."
+    fi
 
 ### Linux Setup ###
 elif [[ "$PLATFORM" == "Linux" ]]; then
@@ -74,6 +92,23 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
 
     # Ensure directories exist
     sudo mkdir -p $PREFIX
+
+    # Install and build the latest LAME from SourceForge if not installed
+    if ! command -v lame &> /dev/null; then
+        echo "LAME not found. Installing the latest version from SourceForge..."
+        cd /tmp
+        # Download and extract the latest LAME version from SourceForge
+        wget https://downloads.sourceforge.net/project/lame/lame/latest/lame-latest.tar.gz -O lame-latest.tar.gz
+        tar -xzf lame-latest.tar.gz
+        cd lame-*
+        ./configure --prefix=/opt/ffmpeg_build --bindir=/usr/local/bin --disable-shared
+        make
+        sudo make install
+        cd ..
+        rm -rf lame-*
+    else
+        echo "LAME is already installed."
+    fi
 
 ### Windows Setup (via MSYS2) ###
 elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYGWIN"* ]]; then
