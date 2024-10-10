@@ -47,7 +47,7 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
 
     # Ensure directories exist
-    mkdir -p $PREFIX
+    sudo mkdir -p $PREFIX
 
 ### Linux Setup ###
 elif [[ "$PLATFORM" == "Linux" ]]; then
@@ -68,7 +68,7 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
     PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
 
     # Ensure directories exist
-    mkdir -p $PREFIX
+    sudo mkdir -p $PREFIX
 
 ### Windows Setup (via MSYS2) ###
 elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYGWIN"* ]]; then
@@ -86,7 +86,7 @@ elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYG
     PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
 
     # Ensure directories exist
-    mkdir -p $PREFIX
+    sudo mkdir -p $PREFIX
 
 else
     echo "Unsupported platform: $PLATFORM"
