@@ -71,7 +71,7 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     export LDFLAGS="-L/opt/homebrew/lib $LDFLAGS"
 
     # Ensure directories exist
-    sudo mkdir -p $PREFIX
+    mkdir -p $PREFIX
 
     # Disable VAAPI and VDPAU for macOS
     VAAPI_FLAG=""
@@ -102,7 +102,7 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
     export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PREFIX/lib/pkgconfig"
 
     # Ensure directories exist
-    sudo mkdir -p $PREFIX
+    mkdir -p $PREFIX
 
     # Enable VAAPI and VDPAU for Linux
     VAAPI_FLAG="--enable-vaapi"
@@ -132,7 +132,7 @@ elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYG
     export PKG_CONFIG_PATH="/mingw64/lib/pkgconfig:$PREFIX/lib/pkgconfig"
 
     # Ensure directories exist
-    sudo mkdir -p $PREFIX
+    mkdir -p $PREFIX
 
     # Disable VAAPI and VDPAU for Windows
     VAAPI_FLAG=""
@@ -184,7 +184,7 @@ echo "$CONFIG_FLAGS"
 make -j$(nproc || sysctl -n hw.ncpu)
 
 # Install
-sudo make install
+make install
 
 # Success message
 echo "FFmpeg built successfully with all features and optimizations, installed to $PREFIX"
