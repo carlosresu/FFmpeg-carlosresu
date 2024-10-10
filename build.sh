@@ -65,6 +65,10 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     VAAPI_FLAG=""
     VDPAU_FLAG=""
 
+    # Disable OpenGL for macOS
+    echo "Disabling OpenGL on macOS..."
+    OPENGL_FLAG="--disable-opengl"
+
 ### Linux Setup ###
 elif [[ "$PLATFORM" == "Linux" ]]; then
     echo "Setting up for Linux..."
@@ -89,6 +93,9 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
     # Enable VAAPI and VDPAU for Linux
     VAAPI_FLAG="--enable-vaapi"
     VDPAU_FLAG="--enable-vdpau"
+    
+    # Enable OpenGL for Linux
+    OPENGL_FLAG="--enable-opengl"
 
 ### Windows Setup (via MSYS2) ###
 elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYGWIN"* ]]; then
@@ -111,6 +118,9 @@ elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYG
     # Disable VAAPI and VDPAU for Windows
     VAAPI_FLAG=""
     VDPAU_FLAG=""
+    
+    # Enable OpenGL for Windows
+    OPENGL_FLAG="--enable-opengl"
 
 else
     echo "Unsupported platform: $PLATFORM"
@@ -138,7 +148,7 @@ CONFIG_FLAGS="$CONFIG_FLAGS --enable-openssl --enable-sdl2"
 
 # Hardware acceleration based on platform
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-videotoolbox $VAAPI_FLAG $VDPAU_FLAG"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-opencl --enable-opengl"
+CONFIG_FLAGS="$CONFIG_FLAGS --enable-opencl $OPENGL_FLAG"
 
 # Set environment variables
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH
