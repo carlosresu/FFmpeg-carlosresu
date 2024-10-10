@@ -23,7 +23,7 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     # Install essential dependencies via Homebrew
     echo "Installing macOS dependencies..."
     brew install nasm yasm pkg-config automake autoconf cmake libtool texinfo git
-    brew install zlib x264 x265 fdk-aac libvpx libvorbis libass libbluray opencore-amr opus aom dav1d frei0r theora libvidstab libvmaf rav1e rubberband sdl2 snappy speex srt tesseract two-lame xvid xz fontconfig frei0r fribidi gnutls openssl aribb24
+    brew install zlib x264 x265 fdk-aac libvpx libvorbis libass libbluray opencore-amr opus aom dav1d frei0r theora libvidstab libvmaf rav1e rubberband sdl2 snappy speex srt tesseract two-lame xvid xz fontconfig frei0r fribidi gnutls openssl aribb24 lame
 
     # Skip unavailable dependencies or provide manual installation instructions
     echo "Note: You'll need to install 'librtmp' and 'libzmq' manually as they are not available in Homebrew."
@@ -55,30 +55,13 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     # Ensure directories exist
     sudo mkdir -p $PREFIX
 
-    # Install and build the latest LAME from SourceForge if not installed
-    if ! command -v lame &> /dev/null; then
-        echo "LAME not found. Installing the latest version from SourceForge..."
-        cd /tmp
-        # Download and extract the latest LAME version from SourceForge
-        wget https://sourceforge.net/projects/lame/files/latest/download -O lame-latest.tar.gz
-        tar -xzf lame-latest.tar.gz
-        cd lame-*
-        ./configure --prefix=/opt/ffmpeg_build --bindir=/usr/local/bin --disable-shared
-        make
-        sudo make install
-        cd ..
-        rm -rf lame-*
-    else
-        echo "LAME is already installed."
-    fi
-
 ### Linux Setup ###
 elif [[ "$PLATFORM" == "Linux" ]]; then
     echo "Setting up for Linux..."
 
     # Install essential dependencies via apt (for Debian/Ubuntu-based distros)
     sudo apt update
-    sudo apt install -y nasm yasm pkg-config automake autoconf cmake libtool texinfo git zlib1g-dev libx264-dev libx265-dev libvpx-dev libvorbis-dev libass-dev libbluray-dev libopencore-amrnb-dev libopencore-amrwb-dev libopus-dev libaom-dev libdav1d-dev libtheora-dev libvidstab-dev libvmaf-dev librubberband-dev sdl2-dev libsnappy-dev libspeex-dev libsrt-dev libtesseract-dev libsoxr-dev libtwolame-dev libxvidcore-dev libzmq3-dev libzimg-dev librabbitmq-dev libssl-dev libfdk-aac-dev
+    sudo apt install -y nasm yasm pkg-config automake autoconf cmake libtool texinfo git zlib1g-dev libx264-dev libx265-dev libvpx-dev libvorbis-dev libass-dev libbluray-dev libopencore-amrnb-dev libopencore-amrwb-dev libopus-dev libaom-dev libdav1d-dev libtheora-dev libvidstab-dev libvmaf-dev librubberband-dev sdl2-dev libsnappy-dev libspeex-dev libsrt-dev libtesseract-dev libsoxr-dev libtwolame-dev libxvidcore-dev libzmq3-dev libzimg-dev librabbitmq-dev libssl-dev libfdk-aac-dev lame
 
     # Install additional libraries and headers
     sudo apt install -y zlib1g-dev libssl-dev
@@ -93,30 +76,13 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
     # Ensure directories exist
     sudo mkdir -p $PREFIX
 
-    # Install and build the latest LAME from SourceForge if not installed
-    if ! command -v lame &> /dev/null; then
-        echo "LAME not found. Installing the latest version from SourceForge..."
-        cd /tmp
-        # Download and extract the latest LAME version from SourceForge
-        wget https://sourceforge.net/projects/lame/files/latest/download -O lame-latest.tar.gz
-        tar -xzf lame-latest.tar.gz
-        cd lame-*
-        ./configure --prefix=/opt/ffmpeg_build --bindir=/usr/local/bin --disable-shared
-        make
-        sudo make install
-        cd ..
-        rm -rf lame-*
-    else
-        echo "LAME is already installed."
-    fi
-
 ### Windows Setup (via MSYS2) ###
 elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYGWIN"* ]]; then
     echo "Setting up for Windows (via MSYS2)..."
 
     # Install MSYS2 dependencies
     pacman -Syu --noconfirm
-    pacman -S --noconfirm base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-x86_64-nasm mingw-w64-x86_64-yasm mingw-w64-x86_64-pkg-config git mingw-w64-x86_64-libvpx mingw-w64-x86_64-x264 mingw-w64-x86_64-x265 mingw-w64-x86_64-fdk-aac mingw-w64-x86_64-opus mingw-w64-x86_64-libtheora mingw-w64-x86_64-dav1d mingw-w64-x86_64-vorbis mingw-w64-x86_64-ass mingw-w64-x86_64-vidstab mingw-w64-x86_64-sdl2
+    pacman -S --noconfirm base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-x86_64-nasm mingw-w64-x86_64-yasm mingw-w64-x86_64-pkg-config git mingw-w64-x86_64-libvpx mingw-w64-x86_64-x264 mingw-w64-x86_64-x265 mingw-w64-x86_64-fdk-aac mingw-w64-x86_64-opus mingw-w64-x86_64-libtheora mingw-w64-x86_64-dav1d mingw-w64-x86_64-vorbis mingw-w64-x86_64-ass mingw-w64-x86_64-vidstab mingw-w64-x86_64-sdl2 lame
 
     # Set up native optimization for Windows
     OPT_FLAGS="-O3 -ffast-math -ftree-vectorize -march=native"
