@@ -7,6 +7,12 @@ git submodule update --init --recursive
 PLATFORM=$(uname)
 ARCH=$(uname -m)
 
+### Default flags
+CONFIG_FLAGS="--enable-gpl --enable-version3 --enable-nonfree --enable-static --enable-shared --enable-pic"
+CONFIG_FLAGS="$CONFIG_FLAGS --enable-lto --enable-optimizations --enable-hardcoded-tables"
+CONFIG_FLAGS="$CONFIG_FLAGS --enable-swscale-alpha --enable-postproc --enable-swresample"
+CONFIG_FLAGS="$CONFIG_FLAGS --enable-pthreads --disable-decklink --enable-runtime-cpudetect --disable-debug"
+
 ### macOS Setup ###
 if [[ "$PLATFORM" == "Darwin" ]]; then
     echo "Setting up for macOS..."
@@ -55,8 +61,9 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     # Ensure directories exist
     sudo mkdir -p $PREFIX
 
-    # Disable VAAPI for macOS
+    # Disable VAAPI and VDPAU for macOS
     VAAPI_FLAG=""
+    VDPAU_FLAG=""
 
 ### Linux Setup ###
 elif [[ "$PLATFORM" == "Linux" ]]; then
@@ -79,8 +86,9 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
     # Ensure directories exist
     sudo mkdir -p $PREFIX
 
-    # Enable VAAPI for Linux
+    # Enable VAAPI and VDPAU for Linux
     VAAPI_FLAG="--enable-vaapi"
+    VDPAU_FLAG="--enable-vdpau"
 
 ### Windows Setup (via MSYS2) ###
 elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYGWIN"* ]]; then
@@ -100,8 +108,9 @@ elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYG
     # Ensure directories exist
     sudo mkdir -p $PREFIX
 
-    # Disable VAAPI for Windows
+    # Disable VAAPI and VDPAU for Windows
     VAAPI_FLAG=""
+    VDPAU_FLAG=""
 
 else
     echo "Unsupported platform: $PLATFORM"
@@ -109,16 +118,6 @@ else
 fi
 
 ### Common Configuration and Build ###
-# Configuration flags
-CONFIG_FLAGS="--prefix=$PREFIX"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-gpl --enable-version3 --enable-nonfree"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-static --enable-shared --enable-pic"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-lto --enable-optimizations"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-hardcoded-tables --enable-swscale-alpha"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-postproc --enable-swresample"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-pthreads --disable-decklink"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-runtime-cpudetect --disable-debug"
-
 # Add flags for Homebrew-installed libraries
 CONFIG_FLAGS="$CONFIG_FLAGS --extra-cflags=$CFLAGS"
 CONFIG_FLAGS="$CONFIG_FLAGS --extra-ldflags=$LDFLAGS"
@@ -137,8 +136,8 @@ CONFIG_FLAGS="$CONFIG_FLAGS --enable-libaom --enable-libdav1d --enable-libsvtav1
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-libaribb24 --enable-libmysofa"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-openssl --enable-sdl2"
 
-# Hardware acceleration
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-videotoolbox $VAAPI_FLAG --enable-vdpau"
+# Hardware acceleration based on platform
+CONFIG_FLAGS="$CONFIG_FLAGS --enable-videotoolbox $VAAPI_FLAG $VDPAU_FLAG"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-opencl --enable-opengl"
 
 # Set environment variables
