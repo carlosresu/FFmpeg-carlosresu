@@ -60,7 +60,7 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
         echo "LAME not found. Installing the latest version from SourceForge..."
         cd /tmp
         # Download and extract the latest LAME version from SourceForge
-        wget https://downloads.sourceforge.net/project/lame/lame/latest/lame-latest.tar.gz -O lame-latest.tar.gz
+        wget https://sourceforge.net/projects/lame/files/latest/download -O lame-latest.tar.gz
         tar -xzf lame-latest.tar.gz
         cd lame-*
         ./configure --prefix=/opt/ffmpeg_build --bindir=/usr/local/bin --disable-shared
@@ -98,7 +98,7 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
         echo "LAME not found. Installing the latest version from SourceForge..."
         cd /tmp
         # Download and extract the latest LAME version from SourceForge
-        wget https://downloads.sourceforge.net/project/lame/lame/latest/lame-latest.tar.gz -O lame-latest.tar.gz
+        wget https://sourceforge.net/projects/lame/files/latest/download -O lame-latest.tar.gz
         tar -xzf lame-latest.tar.gz
         cd lame-*
         ./configure --prefix=/opt/ffmpeg_build --bindir=/usr/local/bin --disable-shared
