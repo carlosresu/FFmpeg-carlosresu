@@ -135,6 +135,7 @@ cd ~/moonlight-qt-carlosresu/FFmpeg-carlosresu
 
 # Clean previous build
 make clean || true
+make distclean || true
 
 # Configure FFmpeg with all features
 ./configure --prefix="$PREFIX" $CONFIG_FLAGS
