@@ -21,10 +21,23 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     # Install essential dependencies via Homebrew
     echo "Installing macOS dependencies..."
     brew install nasm yasm pkg-config automake autoconf cmake libtool texinfo git
-    brew install zlib x264 x265 fdk-aac libvpx libvorbis libass libbluray opencore-amr opus aom dav1d frei0r libtheora libvidstab libvmaf rav1e rubberband sdl2 snappy speex srt tesseract two-lame xvid xz fontconfig frei0r fribidi gnutls lame libsoxr librtmp librubberband openssl libvpx libzmq
+    brew install zlib x264 x265 fdk-aac libvpx libvorbis libass libbluray opencore-amr opus aom dav1d frei0r theora libvidstab libvmaf rav1e rubberband sdl2 snappy speex srt tesseract two-lame xvid xz fontconfig frei0r fribidi gnutls lame libsoxr openssl
 
-    # Install additional system libraries and headers (required for some dependencies)
-    brew install zlib openssl
+    # Skip unavailable dependencies or provide manual installation instructions
+    echo "Note: You'll need to install 'librtmp' and 'libzmq' manually as they are not available in Homebrew."
+
+    # Check for manual installation of librtmp and libzmq
+    if ! brew list --formula | grep -q "librtmp"; then
+        echo "librtmp not found, please install it manually:"
+        echo "git clone https://git.ffmpeg.org/rtmpdump.git"
+        echo "cd rtmpdump/librtmp && make && sudo make install"
+    fi
+
+    if ! brew list --formula | grep -q "libzmq"; then
+        echo "libzmq not found, please install it manually:"
+        echo "git clone https://github.com/zeromq/libzmq.git"
+        echo "cd libzmq && ./autogen.sh && ./configure && make && sudo make install"
+    fi
 
     # Set up native optimization for macOS
     OPT_FLAGS="-O3 -ffast-math -ftree-vectorize -march=native"
