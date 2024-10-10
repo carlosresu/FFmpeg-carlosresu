@@ -135,7 +135,7 @@ cd ~/moonlight-qt-carlosresu/FFmpeg-carlosresu
 make clean || true
 
 # Configure FFmpeg with all features
-./configure $CONFIG_FLAGS
+./configure --prefix="$PREFIX" $CONFIG_FLAGS
 
 # Compile using all CPU cores
 make -j$(nproc || sysctl -n hw.ncpu)
