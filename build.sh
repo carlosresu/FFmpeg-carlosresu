@@ -199,7 +199,7 @@ echo "$CONFIG_FLAGS"
 make -j$(nproc || sysctl -n hw.ncpu)
 
 # Install
-make install
+sudo make install
 
 # Success message
 echo "FFmpeg built successfully with all features and optimizations, installed to $PREFIX"
