@@ -65,7 +65,7 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     OPT_FLAGS="-O3 -ffast-math -ftree-vectorize -march=native"
 
     # Set paths and include both Homebrew and custom install directories in PKG_CONFIG_PATH
-    PREFIX="/opt/ffmpeg_build"
+    PREFIX="/usr/local/ffmpeg_build"
     export PKG_CONFIG_PATH="/opt/homebrew/lib/pkgconfig:$PREFIX/lib/pkgconfig"
 
     # Manually include Homebrew's include and lib paths for LAME and other libraries
@@ -98,7 +98,7 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
     OPT_FLAGS="-O3 -ffast-math -ftree-vectorize -march=native"
 
     # Set paths and include both system-wide and custom install directories in PKG_CONFIG_PATH
-    PREFIX="/opt/ffmpeg_build"
+    PREFIX="/usr/local/ffmpeg_build"
     export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PREFIX/lib/pkgconfig"
 
     # Ensure directories exist
