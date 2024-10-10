@@ -26,10 +26,24 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
         brew update
     fi
 
+    # Function to install Homebrew packages only if they aren't already installed
+    install_if_missing() {
+        for package in "$@"; do
+            if ! brew list --formula | grep -q "^$package\$"; then
+                echo "Installing $package..."
+                brew install "$package"
+            else
+                echo "$package is already installed."
+            fi
+        done
+    }
+
     # Install essential dependencies via Homebrew
     echo "Installing macOS dependencies..."
-    brew install nasm yasm pkg-config automake autoconf cmake libtool texinfo git
-    brew install zimg zlib x264 x265 fdk-aac libvpx libvorbis libass libbluray opencore-amr opus aom dav1d frei0r theora libvidstab libvmaf rav1e rubberband sdl2 snappy speex srt tesseract two-lame xvid xz fontconfig frei0r fribidi gnutls openssl aribb24 lame
+    install_if_missing nasm yasm pkg-config automake autoconf cmake libtool texinfo git
+    install_if_missing zimg zlib x264 x265 fdk-aac libvpx libvorbis libass libbluray opencore-amr opus aom dav1d
+    install_if_missing frei0r theora libvidstab libvmaf rav1e rubberband sdl2 snappy speex srt tesseract
+    install_if_missing two-lame xvid xz fontconfig frei0r fribidi gnutls openssl aribb24 lame
 
     # Skip unavailable dependencies or provide manual installation instructions
     echo "Note: You'll need to install 'librtmp' and 'libzmq' manually as they are not available in Homebrew."
@@ -147,8 +161,7 @@ CONFIG_FLAGS="$CONFIG_FLAGS --enable-libaribb24 --enable-libmysofa"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-openssl --enable-sdl2"
 
 # Hardware acceleration based on platform
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-videotoolbox $VAAPI_FLAG $VDPAU_FLAG"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-opencl $OPENGL_FLAG"
+CONFIG_FLAGS="$CONFIG_FLAGS --enable-videotoolbox $VAAPI_FLAG $VDPAU_FLAG $OPENGL_FLAG"
 
 # Set environment variables
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH
