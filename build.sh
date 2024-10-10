@@ -83,6 +83,11 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     echo "Disabling OpenGL on macOS..."
     OPENGL_FLAG="--disable-opengl"
 
+    # Set PATH for macOS
+    echo "Adding FFmpeg to system PATH for macOS..."
+    echo "export PATH=\"$PREFIX/bin:\$PATH\"" >> ~/.bash_profile
+    source ~/.bash_profile
+
 ### Linux Setup ###
 elif [[ "$PLATFORM" == "Linux" ]]; then
     echo "Setting up for Linux..."
@@ -111,6 +116,11 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
     # Enable OpenGL for Linux
     OPENGL_FLAG="--enable-opengl"
 
+    # Set PATH for Linux
+    echo "Adding FFmpeg to system PATH for Linux..."
+    echo "export PATH=\"$PREFIX/bin:\$PATH\"" >> ~/.bashrc
+    source ~/.bashrc
+
 ### Windows Setup (via MSYS2) ###
 elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYGWIN"* ]]; then
     echo "Setting up for Windows (via MSYS2)..."
@@ -135,6 +145,11 @@ elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYG
     
     # Enable OpenGL for Windows
     OPENGL_FLAG="--enable-opengl"
+
+    # Set PATH for Windows (MSYS2)
+    echo "Adding FFmpeg to system PATH for Windows..."
+    echo "export PATH=\"$PREFIX/bin:\$PATH\"" >> ~/.bash_profile
+    source ~/.bash_profile
 
 else
     echo "Unsupported platform: $PLATFORM"
@@ -188,3 +203,6 @@ make install
 
 # Success message
 echo "FFmpeg built successfully with all features and optimizations, installed to $PREFIX"
+
+# Success message after PATH update
+echo "FFmpeg path added to system PATH."
