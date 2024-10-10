@@ -41,9 +41,7 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     # Install essential dependencies via Homebrew
     echo "Installing macOS dependencies..."
     install_if_missing nasm yasm pkg-config automake autoconf cmake libtool texinfo git
-    install_if_missing zimg zlib x264 x265 fdk-aac libvpx libvorbis libass libbluray opencore-amr opus aom dav1d
-    install_if_missing frei0r theora libvidstab libvmaf rav1e rubberband sdl2 snappy speex srt tesseract
-    install_if_missing two-lame xvid xz fontconfig frei0r fribidi gnutls openssl aribb24 lame
+    install_if_missing zlib x264 x265 fdk-aac libvpx libvorbis libass libbluray aom dav1d opus
 
     # Skip unavailable dependencies or provide manual installation instructions
     echo "Note: You'll need to install 'librtmp' and 'libzmq' manually as they are not available in Homebrew."
@@ -68,7 +66,7 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     PREFIX="/usr/local/ffmpeg_build"
     export PKG_CONFIG_PATH="/opt/homebrew/lib/pkgconfig:$PREFIX/lib/pkgconfig"
 
-    # Manually include Homebrew's include and lib paths for LAME and other libraries
+    # Manually include Homebrew's include and lib paths for necessary libraries
     export CFLAGS="-I/opt/homebrew/include $CFLAGS"
     export LDFLAGS="-L/opt/homebrew/lib $LDFLAGS"
 
@@ -94,10 +92,7 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
 
     # Install essential dependencies via apt (for Debian/Ubuntu-based distros)
     sudo apt update
-    sudo apt install -y nasm yasm pkg-config automake autoconf cmake libtool texinfo git zlib1g-dev libx264-dev libx265-dev libvpx-dev libvorbis-dev libass-dev libbluray-dev libopencore-amrnb-dev libopencore-amrwb-dev libopus-dev libaom-dev libdav1d-dev libtheora-dev libvidstab-dev libvmaf-dev librubberband-dev sdl2-dev libsnappy-dev libspeex-dev libsrt-dev libtesseract-dev libsoxr-dev libtwolame-dev libxvidcore-dev libzmq3-dev libzimg-dev librabbitmq-dev libssl-dev libfdk-aac-dev lame
-
-    # Install additional libraries and headers
-    sudo apt install -y zlib1g-dev libssl-dev
+    sudo apt install -y nasm yasm pkg-config automake autoconf cmake libtool texinfo git zlib1g-dev libx264-dev libx265-dev libvpx-dev libvorbis-dev libass-dev libbluray-dev libopus-dev libaom-dev libdav1d-dev
 
     # Set up native optimization for Linux
     OPT_FLAGS="-O3 -ffast-math -ftree-vectorize -march=native"
@@ -127,7 +122,7 @@ elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYG
 
     # Install MSYS2 dependencies
     pacman -Syu --noconfirm
-    pacman -S --noconfirm base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-x86_64-nasm mingw-w64-x86_64-yasm mingw-w64-x86_64-pkg-config git mingw-w64-x86_64-libvpx mingw-w64-x86_64-x264 mingw-w64-x86_64-x265 mingw-w64-x86_64-fdk-aac mingw-w64-x86_64-opus mingw-w64-x86_64-libtheora mingw-w64-x86_64-dav1d mingw-w64-x86_64-vorbis mingw-w64-x86_64-ass mingw-w64-x86_64-vidstab mingw-w64-x86_64-sdl2 lame
+    pacman -S --noconfirm base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-x86_64-nasm mingw-w64-x86_64-yasm mingw-w64-x86_64-pkg-config git mingw-w64-x86_64-libvpx mingw-w64-x86_64-x264 mingw-w64-x86_64-x265 mingw-w64-x86_64-fdk-aac mingw-w64-x86_64-opus mingw-w64-x86_64-dav1d mingw-w64-x86_64-vorbis
 
     # Set up native optimization for Windows
     OPT_FLAGS="-O3 -ffast-math -ftree-vectorize -march=native"
@@ -162,18 +157,8 @@ CONFIG_FLAGS="$CONFIG_FLAGS --extra-cflags=$CFLAGS"
 CONFIG_FLAGS="$CONFIG_FLAGS --extra-ldflags=$LDFLAGS"
 
 # Video and Audio Codecs
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-libx264 --enable-libx265 --enable-libvpx"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-libmp3lame --enable-libopus --enable-libvorbis"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-libtheora --enable-libass --enable-libbluray"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-libfdk-aac --enable-libfreetype --enable-libfontconfig"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-libfribidi --enable-libvidstab --enable-librubberband"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-librtmp --enable-libsoxr --enable-libtwolame"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-libxvid --enable-libzmq --enable-libzimg"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-librabbitmq --enable-libsnappy --enable-libsrt"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-libspeex --enable-libtesseract --enable-libvmaf"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-libaom --enable-libdav1d --enable-libsvtav1"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-libaribb24 --enable-libmysofa"
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-openssl --enable-sdl2"
+CONFIG_FLAGS="$CONFIG_FLAGS --enable-libx264 --enable-libx265 --enable-libvpx --enable-libopus --enable-libvorbis"
+CONFIG_FLAGS="$CONFIG_FLAGS --enable-libfdk-aac --enable-libass --enable-libbluray --enable-libaom --enable-libdav1d"
 
 # Hardware acceleration based on platform
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-videotoolbox $VAAPI_FLAG $VDPAU_FLAG $OPENGL_FLAG"
