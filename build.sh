@@ -23,7 +23,7 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     # Install essential dependencies via Homebrew
     echo "Installing macOS dependencies..."
     brew install nasm yasm pkg-config automake autoconf cmake libtool texinfo git
-    brew install zlib x264 x265 fdk-aac libvpx libvorbis libass libbluray opencore-amr opus aom dav1d frei0r theora libvidstab libvmaf rav1e rubberband sdl2 snappy speex srt tesseract two-lame xvid xz fontconfig frei0r fribidi gnutls openssl aribb24 lame
+    brew install zimg zlib x264 x265 fdk-aac libvpx libvorbis libass libbluray opencore-amr opus aom dav1d frei0r theora libvidstab libvmaf rav1e rubberband sdl2 snappy speex srt tesseract two-lame xvid xz fontconfig frei0r fribidi gnutls openssl aribb24 lame
 
     # Skip unavailable dependencies or provide manual installation instructions
     echo "Note: You'll need to install 'librtmp' and 'libzmq' manually as they are not available in Homebrew."
@@ -55,6 +55,9 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     # Ensure directories exist
     sudo mkdir -p $PREFIX
 
+    # Disable VAAPI for macOS
+    VAAPI_FLAG=""
+
 ### Linux Setup ###
 elif [[ "$PLATFORM" == "Linux" ]]; then
     echo "Setting up for Linux..."
@@ -76,6 +79,9 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
     # Ensure directories exist
     sudo mkdir -p $PREFIX
 
+    # Enable VAAPI for Linux
+    VAAPI_FLAG="--enable-vaapi"
+
 ### Windows Setup (via MSYS2) ###
 elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYGWIN"* ]]; then
     echo "Setting up for Windows (via MSYS2)..."
@@ -93,6 +99,9 @@ elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYG
 
     # Ensure directories exist
     sudo mkdir -p $PREFIX
+
+    # Disable VAAPI for Windows
+    VAAPI_FLAG=""
 
 else
     echo "Unsupported platform: $PLATFORM"
@@ -129,7 +138,7 @@ CONFIG_FLAGS="$CONFIG_FLAGS --enable-libaribb24 --enable-libmysofa"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-openssl --enable-sdl2"
 
 # Hardware acceleration
-CONFIG_FLAGS="$CONFIG_FLAGS --enable-videotoolbox --enable-vaapi --enable-vdpau"
+CONFIG_FLAGS="$CONFIG_FLAGS --enable-videotoolbox $VAAPI_FLAG --enable-vdpau"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-opencl --enable-opengl"
 
 # Set environment variables
