@@ -50,13 +50,13 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     if ! brew list --formula | grep -q "librtmp"; then
         echo "librtmp not found, please install it manually:"
         echo "git clone https://git.ffmpeg.org/rtmpdump.git"
-        echo "cd rtmpdump/librtmp && make && sudo make install"
+        echo "cd rtmpdump/librtmp && make && sudo sudo make install"
     fi
 
     if ! brew list --formula | grep -q "libzmq"; then
         echo "libzmq not found, please install it manually:"
         echo "git clone https://github.com/zeromq/libzmq.git"
-        echo "cd libzmq && ./autogen.sh && ./configure && make && sudo make install"
+        echo "cd libzmq && ./autogen.sh && ./configure && make && sudo sudo make install"
     fi
 
     # Set up native optimization for macOS
@@ -184,7 +184,7 @@ echo "$CONFIG_FLAGS"
 make -j$(nproc || sysctl -n hw.ncpu)
 
 # Install
-make install
+sudo make install
 
 # Success message
 echo "FFmpeg built successfully with all features and optimizations, installed to $PREFIX"
