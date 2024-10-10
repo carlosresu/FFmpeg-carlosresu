@@ -106,6 +106,10 @@ CONFIG_FLAGS="$CONFIG_FLAGS --enable-postproc --enable-swresample"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-pthreads --disable-decklink"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-runtime-cpudetect --disable-debug"
 
+# Add flags for Homebrew-installed libraries
+CONFIG_FLAGS="$CONFIG_FLAGS --extra-cflags=$CFLAGS"
+CONFIG_FLAGS="$CONFIG_FLAGS --extra-ldflags=$LDFLAGS"
+
 # Video and Audio Codecs
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-libx264 --enable-libx265 --enable-libvpx"
 CONFIG_FLAGS="$CONFIG_FLAGS --enable-libmp3lame --enable-libopus --enable-libvorbis"
