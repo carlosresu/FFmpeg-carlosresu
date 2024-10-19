@@ -83,7 +83,16 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
 
     # Set PATH for macOS
     echo "Adding FFmpeg to system PATH for macOS..."
-    echo "export PATH=\"$PREFIX/bin:\$PATH\"" >> ~/.bash_profile
+
+    # Check if the line is already present in ~/.bash_profile
+    if ! grep -Fxq 'export PATH="$PREFIX/bin:$PATH"' ~/.bash_profile; then
+        echo 'export PATH="$PREFIX/bin:$PATH"' >> ~/.bash_profile
+        echo "FFmpeg path added to ~/.bash_profile"
+    else
+        echo "FFmpeg path already exists in ~/.bash_profile"
+    fi
+
+    # Reload the profile to apply changes
     source ~/.bash_profile
 
 ### Linux Setup ###
@@ -113,7 +122,16 @@ elif [[ "$PLATFORM" == "Linux" ]]; then
 
     # Set PATH for Linux
     echo "Adding FFmpeg to system PATH for Linux..."
-    echo "export PATH=\"$PREFIX/bin:\$PATH\"" >> ~/.bashrc
+
+    # Check if the line is already present in ~/.bashrc
+    if ! grep -Fxq 'export PATH="$PREFIX/bin:$PATH"' ~/.bashrc; then
+        echo 'export PATH="$PREFIX/bin:$PATH"' >> ~/.bashrc
+        echo "FFmpeg path added to ~/.bashrc"
+    else
+        echo "FFmpeg path already exists in ~/.bashrc"
+    fi
+
+    # Reload the profile to apply changes
     source ~/.bashrc
 
 ### Windows Setup (via MSYS2) ###
@@ -143,7 +161,16 @@ elif [[ "$PLATFORM" == "MINGW"* || "$PLATFORM" == "MSYS"* || "$PLATFORM" == "CYG
 
     # Set PATH for Windows (MSYS2)
     echo "Adding FFmpeg to system PATH for Windows..."
-    echo "export PATH=\"$PREFIX/bin:\$PATH\"" >> ~/.bash_profile
+
+    # Check if the line is already present in ~/.bash_profile
+    if ! grep -Fxq 'export PATH="$PREFIX/bin:$PATH"' ~/.bash_profile; then
+        echo 'export PATH="$PREFIX/bin:$PATH"' >> ~/.bash_profile
+        echo "FFmpeg path added to ~/.bash_profile"
+    else
+        echo "FFmpeg path already exists in ~/.bash_profile"
+    fi
+
+    # Reload the profile to apply changes
     source ~/.bash_profile
 
 else
