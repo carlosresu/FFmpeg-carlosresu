@@ -42,3 +42,5 @@
 /mapfile
 /tools/python/__pycache__/
 .DS_Store
+/libavcodec/vulkan/*.c
+/libavfilter/vulkan/*.c
