@@ -2951,6 +2951,7 @@ exr_decoder_deps="zlib"
 exr_encoder_deps="zlib"
 ffv1_decoder_select="rangecoder"
 ffv1_encoder_select="rangecoder"
+ffv1_vulkan_encoder_select="vulkan spirv_compiler"
 ffvhuff_decoder_select="huffyuv_decoder"
 ffvhuff_encoder_select="huffyuv_encoder"
 fic_decoder_select="golomb"
@@ -3071,7 +3072,7 @@ rv20_decoder_select="h263_decoder"
 rv20_encoder_select="h263_encoder"
 rv30_decoder_select="golomb h264pred h264qpel mpegvideodec rv34dsp"
 rv40_decoder_select="golomb h264pred h264qpel mpegvideodec rv34dsp"
-rv60_decoder_select="videodsp"
+rv60_decoder_select="videodsp golomb"
 screenpresso_decoder_deps="zlib"
 shorten_decoder_select="bswapdsp"
 sipr_decoder_select="lsp"
@@ -3154,7 +3155,7 @@ d3d11va_deps="dxva_h ID3D11VideoDecoder ID3D11VideoContext"
 d3d12va_deps="dxva_h ID3D12Device ID3D12VideoDecoder"
 dxva2_deps="dxva2api_h DXVA2_ConfigPictureDecode ole32 user32"
 ffnvcodec_deps_any="libdl LoadLibrary"
-mediacodec_deps="android mediandk"
+mediacodec_deps="android mediandk pthreads"
 nvdec_deps="ffnvcodec"
 vaapi_x11_deps="xlib_x11"
 videotoolbox_hwaccel_deps="videotoolbox pthreads"
@@ -4357,6 +4358,9 @@ do_random(){
     random_seed=$(awk "BEGIN { srand($random_seed); print srand() }")
     $action $(rand_list "$@" | awk "BEGIN { srand($random_seed) } \$1 == \"prob\" { prob = \$2; next } rand() < prob { print }")
 }
+
+# deprecated components (disabled by default)
+disable sonic_encoder sonic_ls_encoder
 
 for opt do
     optval="${opt#*=}"
@@ -7110,7 +7114,9 @@ enabled omx_rpi           && { test_code cc OMX_Core.h OMX_IndexConfigBrcmVideoR
                                  test_code cc OMX_Core.h OMX_IndexConfigBrcmVideoRequestIFrame; } ||
                                die "ERROR: OpenMAX IL headers from raspberrypi/firmware not found"; } &&
                              enable omx
-enabled omx               && require_headers OMX_Core.h
+enabled omx               && require_headers OMX_Core.h && \
+    warn "The OpenMAX encoders are deprecated and will be removed in future versions"
+
 enabled openssl           && { { check_pkg_config openssl "openssl >= 3.0.0" openssl/ssl.h OPENSSL_init_ssl &&
                                  { enabled gplv3 || ! enabled gpl || enabled nonfree || die "ERROR: OpenSSL >=3.0.0 requires --enable-version3"; }; } ||
                                { enabled gpl && ! enabled nonfree && die "ERROR: OpenSSL <3.0.0 is incompatible with the gpl"; } ||
