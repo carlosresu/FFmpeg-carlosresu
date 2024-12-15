@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2024 Zhao Zhili
+ *
  * This file is part of FFmpeg.
  *
  * FFmpeg is free software; you can redistribute it and/or
@@ -16,22 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef FFTOOLS_OBJPOOL_H
-#define FFTOOLS_OBJPOOL_H
+#ifndef AVCODEC_WASM_HEVC_IDCT_H
+#define AVCODEC_WASM_HEVC_IDCT_H
 
-typedef struct ObjPool ObjPool;
+#include <stdint.h>
 
-typedef void* (*ObjPoolCBAlloc)(void);
-typedef void  (*ObjPoolCBReset)(void *);
-typedef void  (*ObjPoolCBFree)(void **);
+void ff_hevc_idct_4x4_8_simd128(int16_t *coeffs, int col_limit);
+void ff_hevc_idct_8x8_8_simd128(int16_t *coeffs, int col_limit);
+void ff_hevc_idct_16x16_8_simd128(int16_t *coeffs, int col_limit);
+void ff_hevc_idct_32x32_8_simd128(int16_t *coeffs, int col_limit);
 
-void     objpool_free(ObjPool **op);
-ObjPool *objpool_alloc(ObjPoolCBAlloc cb_alloc, ObjPoolCBReset cb_reset,
-                       ObjPoolCBFree cb_free);
-ObjPool *objpool_alloc_packets(void);
-ObjPool *objpool_alloc_frames(void);
+void ff_hevc_idct_4x4_10_simd128(int16_t *coeffs, int col_limit);
+void ff_hevc_idct_8x8_10_simd128(int16_t *coeffs, int col_limit);
+void ff_hevc_idct_16x16_10_simd128(int16_t *coeffs, int col_limit);
+void ff_hevc_idct_32x32_10_simd128(int16_t *coeffs, int col_limit);
 
-int  objpool_get(ObjPool *op, void **obj);
-void objpool_release(ObjPool *op, void **obj);
-
-#endif // FFTOOLS_OBJPOOL_H
+#endif /* AVCODEC_WASM_HEVC_IDCT_H */
